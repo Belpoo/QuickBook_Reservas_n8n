@@ -139,5 +139,4 @@ Invoke-RestMethod -Method Post -Uri "http://localhost:5678/webhook-test/QuickBoo
 ## Documentación y evidencias
  
 - [Bitácora unificada](documentacion/Bitacora_Unificada_Proyecto.md)
-- [Presentación del proyecto (PDF)](documentacion/Presentacion_Corte_2.pdf)
-- [Diagramas](documentacion/diagramas/) y [evidencias de pruebas](documentacion/evidencias/)
+- [Presentación del proyecto (PDF)](QuickBook-reservas-inteligentes.pdf)
