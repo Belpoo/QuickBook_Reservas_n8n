@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="referrer" content="no-referrer">
+  <!--
+    Content-Security-Policy: solo permite scripts y estilos de este mismo sitio
+    y conexiones al n8n local. Si cambias la URL del Webhook (producción),
+    actualiza también "connect-src".
+  -->
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src http://localhost:5678; base-uri 'none'; form-action 'none'">
+  <title>QuickBook · Reserva tu cita</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+
+<body>
+  <a class="skip-link" href="#reserva-form">Saltar al formulario</a>
+
+  <div class="layout">
+
+    <!-- ============ Panel de presentación ============ -->
+    <header class="hero">
+      <p class="brand">QuickBook</p>
+
+      <div class="hero__copy">
+        <p class="eyebrow">Reservas en línea</p>
+        <h1 class="hero__title">Tu cita, <em>sin esperas.</em></h1>
+        <p class="hero__lead">Elige el servicio, el día y la hora. Verificamos la disponibilidad y te respondemos al
+          instante.</p>
+
+        <ol class="steps">
+          <li><span class="steps__n">01</span> Elige tu servicio</li>
+          <li><span class="steps__n">02</span> Escoge día y hora</li>
+          <li><span class="steps__n">03</span> Recibe tu confirmación</li>
+        </ol>
+      </div>
+
+      <svg class="hero__art" viewBox="0 0 420 440" aria-hidden="true" focusable="false">
+        <defs>
+          <radialGradient id="lg" cx="35%" cy="30%" r="80%">
+            <stop offset="0" stop-color="#e2594f" />
+            <stop offset=".55" stop-color="#b32a2a" />
+            <stop offset="1" stop-color="#6a1616" />
+          </radialGradient>
+          <pattern id="skin" width="12" height="12" patternUnits="userSpaceOnUse" patternTransform="rotate(20)">
+            <circle cx="3" cy="3" r="1.8" fill="#fff" fill-opacity=".22" />
+            <circle cx="9" cy="9" r="1.8" fill="#fff" fill-opacity=".22" />
+          </pattern>
+          <linearGradient id="leaf" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#66783f" />
+            <stop offset="1" stop-color="#3b4727" />
+          </linearGradient>
+        </defs>
+
+        <path d="M-20 70 C 70 70 150 120 222 190" fill="none" stroke="#8b7a52" stroke-width="7"
+          stroke-linecap="round" />
+        <path d="M222 190 C 215 240 190 262 160 290" fill="none" stroke="#8b7a52" stroke-width="5"
+          stroke-linecap="round" />
+        <path d="M222 190 C 250 240 262 270 268 300" fill="none" stroke="#8b7a52" stroke-width="5"
+          stroke-linecap="round" />
+
+        <g fill="url(#leaf)">
+          <path d="M0 0 C 30 -40 105 -44 158 -6 C 110 36 35 38 0 0Z" transform="translate(30 70) rotate(-28)" />
+          <path d="M0 0 C 30 -40 105 -44 158 -6 C 110 36 35 38 0 0Z" transform="translate(110 96) rotate(18)" />
+          <path d="M0 0 C 30 -40 105 -44 158 -6 C 110 36 35 38 0 0Z" transform="translate(200 170) rotate(-40)" />
+          <path d="M0 0 C 30 -40 105 -44 158 -6 C 110 36 35 38 0 0Z" transform="translate(222 190) rotate(12)" />
+        </g>
+        <g stroke="#9db06a" stroke-opacity=".5" stroke-width="2" fill="none" stroke-linecap="round">
+          <path d="M0 0 L 130 -8" transform="translate(30 70) rotate(-28)" />
+          <path d="M0 0 L 130 -8" transform="translate(110 96) rotate(18)" />
+          <path d="M0 0 L 130 -8" transform="translate(200 170) rotate(-40)" />
+          <path d="M0 0 L 130 -8" transform="translate(222 190) rotate(12)" />
+        </g>
+
+        <g>
+          <circle cx="150" cy="335" r="70" fill="url(#lg)" />
+          <circle cx="150" cy="335" r="70" fill="url(#skin)" />
+          <ellipse cx="124" cy="308" rx="16" ry="9" fill="#fff" fill-opacity=".22" transform="rotate(-30 124 308)" />
+
+          <circle cx="278" cy="352" r="62" fill="url(#lg)" />
+          <circle cx="278" cy="352" r="62" fill="url(#skin)" />
+          <ellipse cx="256" cy="328" rx="14" ry="8" fill="#fff" fill-opacity=".22" transform="rotate(-30 256 328)" />
+
+          <circle cx="212" cy="262" r="56" fill="url(#lg)" />
+          <circle cx="212" cy="262" r="56" fill="url(#skin)" />
+          <ellipse cx="192" cy="240" rx="13" ry="7" fill="#fff" fill-opacity=".22" transform="rotate(-30 192 240)" />
+        </g>
+      </svg>
+    </header>
+
+    <!-- ============ Formulario ============ -->
+    <main class="panel">
+      <section class="card" aria-label="Formulario de reserva">
+
+        <!-- Resultado de la reserva (lo llena app.js con textContent) -->
+        <div id="result" class="result" tabindex="-1" hidden>
+          <svg class="result__icon result__icon--ok" viewBox="0 0 24 24" width="36" height="36" aria-hidden="true"
+            focusable="false">
+            <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2" />
+            <path d="M7 12.5l3.2 3.2L17 9" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
+              stroke-linejoin="round" />
+          </svg>
+          <svg class="result__icon result__icon--bad" viewBox="0 0 24 24" width="36" height="36" aria-hidden="true"
+            focusable="false">
+            <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2" />
+            <path d="M12 7v6M12 16.5v.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" />
+          </svg>
+          <div class="result__body">
+            <h2 id="result-title" class="result__title"></h2>
+            <p id="result-message" class="result__message"></p>
+            <button type="button" id="result-action" class="btn btn--light" hidden>Hacer otra reserva</button>
+          </div>
+        </div>
+
+        <form id="reserva-form" novalidate>
+
+          <!-- 1 · Servicio -->
+          <section class="step" aria-labelledby="t-servicio">
+            <h2 class="step__title" id="t-servicio"><span class="step__num" aria-hidden="true">1</span>¿Qué necesitas?
+            </h2>
+            <fieldset class="choice" id="servicio" aria-describedby="servicio-error">
+              <legend class="sr-only">Servicio (obligatorio)</legend>
+              <div class="services">
+                <div class="pick">
+                  <input class="pick__input" type="radio" name="servicio" id="srv-medica" value="Consulta Medica"
+                    data-label="Consulta médica" required>
+                  <label class="service" for="srv-medica">
+                    <svg class="service__icon" viewBox="0 0 24 24" width="28" height="28" fill="none"
+                      stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"
+                      aria-hidden="true" focusable="false">
+                      <rect x="3.5" y="3.5" width="17" height="17" rx="5" />
+                      <path d="M12 8v8M8 12h8" />
+                    </svg>
+                    <span class="service__name">Consulta médica</span>
+                    <span class="service__sub">Cuida tu salud</span>
+                  </label>
+                </div>
+                <div class="pick">
+                  <input class="pick__input" type="radio" name="servicio" id="srv-vet" value="Consulta Veterinaria"
+                    data-label="Consulta veterinaria" required>
+                  <label class="service" for="srv-vet">
+                    <svg class="service__icon" viewBox="0 0 24 24" width="28" height="28" fill="none"
+                      stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"
+                      aria-hidden="true" focusable="false">
+                      <circle cx="6.5" cy="10" r="1.6" />
+                      <circle cx="10" cy="6.8" r="1.7" />
+                      <circle cx="14" cy="6.8" r="1.7" />
+                      <circle cx="17.5" cy="10" r="1.6" />
+                      <path
+                        d="M12 13c-2.5 0-4.5 2-4.5 3.7 0 1.4 1.2 2.3 2.6 2.3.8 0 1.3-.3 1.9-.3s1.1.3 1.9.3c1.4 0 2.6-.9 2.6-2.3C16.5 15 14.5 13 12 13z" />
+                    </svg>
+                    <span class="service__name">Consulta veterinaria</span>
+                    <span class="service__sub">Cuida a tu mascota</span>
+                  </label>
+                </div>
+                <div class="pick">
+                  <input class="pick__input" type="radio" name="servicio" id="srv-pelu" value="Peluquería"
+                    data-label="Peluquería" required>
+                  <label class="service" for="srv-pelu">
+                    <svg class="service__icon" viewBox="0 0 24 24" width="28" height="28" fill="none"
+                      stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"
+                      aria-hidden="true" focusable="false">
+                      <circle cx="6" cy="6.5" r="2.5" />
+                      <circle cx="6" cy="17.5" r="2.5" />
+                      <path d="M8 8l12 10M8 16L20 6" />
+                    </svg>
+                    <span class="service__name">Peluquería</span>
+                    <span class="service__sub">Corte y estilo</span>
+                  </label>
+                </div>
+              </div>
+            </fieldset>
+            <p class="error" id="servicio-error" hidden></p>
+          </section>
+
+          <!-- 2 · Fecha y hora -->
+          <section class="step" aria-labelledby="t-cuando">
+            <h2 class="step__title" id="t-cuando"><span class="step__num" aria-hidden="true">2</span>¿Cuándo?</h2>
+
+            <fieldset class="choice" id="fecha_preferida" aria-describedby="fecha_preferida-error">
+              <legend class="mini-label">Día <span class="req" aria-hidden="true">*</span> <span
+                  class="mini-label__aside">próximos 7 días</span></legend>
+              <!-- Los días se generan en app.js -->
+              <div class="chips chips--days" id="fecha-options"></div>
+            </fieldset>
+            <p class="error" id="fecha_preferida-error" hidden></p>
+
+            <fieldset class="choice" id="hora_preferida" aria-describedby="hora_preferida-error">
+              <legend class="mini-label">Hora <span class="req" aria-hidden="true">*</span></legend>
+
+              <p class="chips-label">Mañana</p>
+              <div class="chips">
+                <div class="pick"><input class="pick__input" type="radio" name="hora_preferida" id="h-0800"
+                    value="08:00" required><label class="chip chip--hour" for="h-0800">08:00</label></div>
+                <div class="pick"><input class="pick__input" type="radio" name="hora_preferida" id="h-0900"
+                    value="09:00" required><label class="chip chip--hour" for="h-0900">09:00</label></div>
+                <div class="pick"><input class="pick__input" type="radio" name="hora_preferida" id="h-1000"
+                    value="10:00" required><label class="chip chip--hour" for="h-1000">10:00</label></div>
+                <div class="pick"><input class="pick__input" type="radio" name="hora_preferida" id="h-1100"
+                    value="11:00" required><label class="chip chip--hour" for="h-1100">11:00</label></div>
+              </div>
+
+              <p class="chips-label">Tarde</p>
+              <div class="chips">
+                <div class="pick"><input class="pick__input" type="radio" name="hora_preferida" id="h-1300"
+                    value="13:00" required><label class="chip chip--hour" for="h-1300">13:00</label></div>
+                <div class="pick"><input class="pick__input" type="radio" name="hora_preferida" id="h-1400"
+                    value="14:00" required><label class="chip chip--hour" for="h-1400">14:00</label></div>
+                <div class="pick"><input class="pick__input" type="radio" name="hora_preferida" id="h-1500"
+                    value="15:00" required><label class="chip chip--hour" for="h-1500">15:00</label></div>
+                <div class="pick"><input class="pick__input" type="radio" name="hora_preferida" id="h-1600"
+                    value="16:00" required><label class="chip chip--hour" for="h-1600">16:00</label></div>
+                <div class="pick"><input class="pick__input" type="radio" name="hora_preferida" id="h-1700"
+                    value="17:00" required><label class="chip chip--hour" for="h-1700">17:00</label></div>
+                <div class="pick"><input class="pick__input" type="radio" name="hora_preferida" id="h-1800"
+                    value="18:00" required><label class="chip chip--hour" for="h-1800">18:00</label></div>
+              </div>
+            </fieldset>
+            <p class="error" id="hora_preferida-error" hidden></p>
+          </section>
+
+          <!-- 3 · Datos -->
+          <section class="step" aria-labelledby="t-datos">
+            <h2 class="step__title" id="t-datos"><span class="step__num" aria-hidden="true">3</span>Tus datos</h2>
+
+            <div class="field">
+              <label for="nombre">Nombre completo <span class="req" aria-hidden="true">*</span></label>
+              <div class="input-wrap">
+                <svg class="input-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+                  stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
+                  focusable="false">
+                  <circle cx="12" cy="8" r="3.6" />
+                  <path d="M5 20c0-3.5 3-6 7-6s7 2.5 7 6" />
+                </svg>
+                <input id="nombre" name="nombre" type="text" required maxlength="80" autocomplete="name"
+                  placeholder="Tu nombre y apellido" aria-describedby="nombre-error">
+              </div>
+              <p class="error" id="nombre-error" hidden></p>
+            </div>
+
+            <div class="grid-2">
+              <div class="field">
+                <label for="whatsapp">WhatsApp <span class="req" aria-hidden="true">*</span></label>
+                <div class="input-wrap">
+                  <svg class="input-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+                    stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
+                    focusable="false">
+                    <path
+                      d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z" />
+                  </svg>
+                  <input id="whatsapp" name="whatsapp" type="tel" inputmode="tel" required maxlength="20"
+                    autocomplete="tel" placeholder="+57 300 123 4567" aria-describedby="whatsapp-error">
+                </div>
+                <p class="error" id="whatsapp-error" hidden></p>
+              </div>
+
+              <div class="field">
+                <label for="usuario_whatsapp">Usuario de WhatsApp <span class="opt">(opcional)</span></label>
+                <div class="input-wrap">
+                  <svg class="input-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+                    stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
+                    focusable="false">
+                    <circle cx="12" cy="12" r="4" />
+                    <path d="M16 8v5a2.5 2.5 0 0 0 5 0v-1a9 9 0 1 0-3.5 7.1" />
+                  </svg>
+                  <input id="usuario_whatsapp" name="usuario_whatsapp" type="text" maxlength="40" autocomplete="off"
+                    autocapitalize="none" spellcheck="false" placeholder="tu.usuario"
+                    aria-describedby="usuario_whatsapp-error">
+                </div>
+                <p class="error" id="usuario_whatsapp-error" hidden></p>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="correo">Correo electrónico <span class="req" aria-hidden="true">*</span></label>
+              <div class="input-wrap">
+                <svg class="input-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+                  stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
+                  focusable="false">
+                  <rect x="3" y="5" width="18" height="14" rx="3" />
+                  <path d="M3.5 7.5L12 13l8.5-5.5" />
+                </svg>
+                <input id="correo" name="correo" type="email" inputmode="email" required maxlength="254"
+                  autocomplete="email" autocapitalize="none" spellcheck="false" placeholder="nombre@correo.com"
+                  aria-describedby="correo-error">
+              </div>
+              <p class="error" id="correo-error" hidden></p>
+            </div>
+          </section>
+
+          <!-- Resumen en vivo (decorativo: no se anuncia en cada cambio) -->
+          <div class="summary" id="summary">
+            <p class="summary__label">Tu reserva</p>
+            <p class="summary__text" id="summary-text">Elige servicio, día y hora.</p>
+          </div>
+
+          <button type="submit" id="submit-btn" class="btn btn--primary">
+            <span class="spinner" aria-hidden="true"></span>
+            <span id="submit-label">Confirmar reserva</span>
+            <svg class="btn__arrow" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+              stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+              <path d="M5 12h14M13 6l6 6-6 6" />
+            </svg>
+          </button>
+
+          <p class="privacy">Usamos tus datos solo para gestionar esta reserva.</p>
+        </form>
+
+        <!-- Aviso para lectores de pantalla mientras se envía -->
+        <p id="live" class="sr-only" role="status" aria-live="polite"></p>
+      </section>
+    </main>
+  </div>
+</body>
+
+</html>
