@@ -1,0 +1,203 @@
+{
+  "name": "Manejador_Errores",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "f2e5e281-63a2-43be-bad7-163d4962c49a",
+      "name": "Error Trigger"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0bc46cbd-6724-49ea-ade4-d1335cd3368b",
+              "name": "workflow",
+              "value": "={{ $json.execution.workflow.name }}",
+              "type": "string"
+            },
+            {
+              "id": "451214df-86d8-4cf4-ad54-246f8de9f1ab",
+              "name": "nodo_error",
+              "value": "={{ $json.execution.lastNodeExecuted }}",
+              "type": "string"
+            },
+            {
+              "id": "1f77f414-0327-4fef-b3be-900389f22ad5",
+              "name": "mensaje_error",
+              "value": "={{ $json.execution.error.message }}",
+              "type": "string"
+            },
+            {
+              "id": "73442579-ad7d-4434-9527-420f2ab3e0a5",
+              "name": "url_ejecucion",
+              "value": "={{ $json.execution.url }}",
+              "type": "string"
+            },
+            {
+              "id": "8612d8af-9e1f-45a5-8c85-1fd7e3c2d91c",
+              "name": "id_ejecucion",
+              "value": "={{ $json.execution.id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        208,
+        0
+      ],
+      "id": "225d227b-bf42-4b04-a1c7-c4bad0cc56be",
+      "name": "Preparar Registro de Error"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/16NTQ0721Kou9_alrH-cmeSajP31L1fgpfWh2mZqCb18/edit?usp=sharing",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 2100178441,
+          "mode": "list",
+          "cachedResultName": "Errores",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/16NTQ0721Kou9_alrH-cmeSajP31L1fgpfWh2mZqCb18/edit#gid=2100178441"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "fecha_registro": "={{ $now.toISO() }}",
+            "workflow": "={{ $json.workflow }}",
+            "nodo_error": "={{ $json.nodo_error }}",
+            "mensaje_error": "={{ $json.mensaje_error }}",
+            "url_error": "={{ $json.url_ejecucion }}",
+            "id_ejecucion": "={{ $json.id_ejecucion }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "fecha_registro",
+              "displayName": "fecha_registro",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "workflow",
+              "displayName": "workflow",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "nodo_error",
+              "displayName": "nodo_error",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "mensaje_error",
+              "displayName": "mensaje_error",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "url_error",
+              "displayName": "url_error",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "id_ejecucion",
+              "displayName": "id_ejecucion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        432,
+        0
+      ],
+      "id": "c256bf38-d159-4357-bac0-14d50a8956f1",
+      "name": "Google Sheets Errores",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "sqtiAAFsHxctCm67",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Error Trigger": {
+      "main": [
+        [
+          {
+            "node": "Preparar Registro de Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparar Registro de Error": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets Errores",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "1f29c4ac-40d1-418d-8c95-4804fb6b9ec2",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "nodeGroups": [],
+  "id": "9ReeBSnfKIofEGln",
+  "tags": []
+}

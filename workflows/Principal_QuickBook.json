@@ -1,0 +1,1379 @@
+{
+  "name": "QuickBook",
+  "nodes": [
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "67a086c7-d106-43a9-a0bd-0e9a030de432",
+              "leftValue": "={{ $json.fecha_preferida }}",
+              "rightValue": "={{ $today }}",
+              "operator": {
+                "type": "dateTime",
+                "operation": "after"
+              }
+            },
+            {
+              "id": "67573fdd-7a37-4751-b87f-588cd54bfb73",
+              "leftValue": "={{ $json.fecha_preferida }}",
+              "rightValue": "={{ $today.plus({ days: 7 }) }}",
+              "operator": {
+                "type": "dateTime",
+                "operation": "beforeOrEquals"
+              }
+            },
+            {
+              "id": "ecfaeae2-0007-4044-a96d-70ae0590845e",
+              "leftValue": "={{ $json.nombre }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "fb84cd17-2970-4740-9735-9ea4816bccc0",
+              "leftValue": "={{ $json.whatsapp }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "461c39fd-54cc-4578-b4bd-ffd2d32538cd",
+              "leftValue": "={{ $json.correo }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "28274c6a-bcf5-4db2-b7c0-9254f24c9e6a",
+              "leftValue": "={{ $json.fecha_preferida }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "7c293334-f69c-49ef-952c-4e3a6521f6d4",
+              "leftValue": "={{ $json.hora_preferida }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "5a1975bf-8bbe-416f-be05-b39a26e0b449",
+              "leftValue": "={{ $json.servicio }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -1312,
+        48
+      ],
+      "id": "a4114dac-7414-4c8a-896d-c1707a332050",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.servicio }}",
+                    "rightValue": "consulta medica",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "a16a0b02-4f2c-46ce-9ade-cd684d6a8f49"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Consulta Medica"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "c60b73c6-298b-4f2c-a3ff-dc32ecc7ae4f",
+                    "leftValue": "={{ $json.servicio }}",
+                    "rightValue": "peluquería",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Peluqueria"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "801eaffb-df5f-433c-a744-9c71bbf8ac80",
+                    "leftValue": "={{ $json.servicio }}",
+                    "rightValue": "consulta veterinaria",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Cita Veterinaria"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        -864,
+        16
+      ],
+      "id": "be63e48a-4757-4e0f-abb4-589b1917762b",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "formTitle": "QuickBook - Reserva de cita",
+        "formDescription": "Completa los siguientes datos para solicitar tu reserva.",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Servicio",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Consulta Medica"
+                  },
+                  {
+                    "option": "Consulta Veterinaria"
+                  },
+                  {
+                    "option": "Peluquería"
+                  }
+                ]
+              },
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Nombre Completo",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "WhatsApp",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Usuario Whatsapp "
+            },
+            {
+              "fieldLabel": "Correo",
+              "fieldType": "email",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Fecha preferida",
+              "fieldType": "date",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Hora preferida",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "08:00"
+                  },
+                  {
+                    "option": "09:00"
+                  },
+                  {
+                    "option": "10:00"
+                  },
+                  {
+                    "option": "11:00"
+                  },
+                  {
+                    "option": "13:00"
+                  },
+                  {
+                    "option": "14:00"
+                  },
+                  {
+                    "option": "15:00"
+                  },
+                  {
+                    "option": "16:00"
+                  },
+                  {
+                    "option": "17:00"
+                  },
+                  {
+                    "option": "18:00"
+                  }
+                ]
+              },
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.6,
+      "position": [
+        -2096,
+        -272
+      ],
+      "id": "7562a1d9-88e3-4907-b8b8-0f8f9e288716",
+      "name": "Formulario Reserva",
+      "webhookId": "1e732611-3ee1-40aa-923c-f3c2acab0f75",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0aed0f55-c37a-41c0-89cc-f1f58fc1e567",
+              "name": "nombre",
+              "value": "={{ ($json[\"Nombre Completo\"] || $json.body?.nombre || '').trim().toUpperCase() }}",
+              "type": "string"
+            },
+            {
+              "id": "c238002e-60e4-494a-b8f5-2e26c0d448f0",
+              "name": "whatsapp",
+              "value": "={{ ($json[\"WhatsApp\"] || $json.body?.whatsapp || '').replace(/\\s/g, '') }}",
+              "type": "string"
+            },
+            {
+              "id": "8c42ccfb-2e1e-49e5-a29d-5a75efa15afe",
+              "name": "correo",
+              "value": "={{ ($json[\"Correo\"] || $json.body?.correo || '').trim().toLowerCase() }}",
+              "type": "string"
+            },
+            {
+              "id": "db0105b5-1106-443f-a422-2bbd609acef6",
+              "name": "=fecha_preferida",
+              "value": "={{ $json[\"Fecha preferida\"] || $json.body?.fecha_preferida || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "340a7d08-6fdf-4086-ae8d-af6741a46781",
+              "name": "=hora_preferida",
+              "value": "={{ $json[\"Hora preferida\"] || $json.body?.hora_preferida || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "7c5baa5f-58d7-4039-98a2-ab5fa703dc88",
+              "name": "servicio",
+              "value": "={{ $json[\"Servicio\"] || $json.body?.servicio || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "11b6c836-55bd-4e21-bfc6-6fd32db39bb5",
+              "name": "Usuario Whatsapp ",
+              "value": "={{ $json[\"Usuario Whatsapp \"] || $json.body?.usuario_whatsapp || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "4687511a-2415-4ad8-af03-2ece19a0ab30",
+              "name": "Origen",
+              "value": "={{ $json.body ? 'webhook' : 'formulario' }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        -1808,
+        -272
+      ],
+      "id": "5aea3bcb-308f-4ba0-8908-631addebe8c2",
+      "name": "Mapear con expresiones",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fb8fef55-e710-4b70-b943-6653049f4ccb",
+              "name": "Asunto",
+              "value": "Solicitud de reserva rechazada",
+              "type": "string"
+            },
+            {
+              "id": "b35760e9-ca96-439b-abf5-dae9f5019ef1",
+              "name": "cuerpo",
+              "value": "={{\n(() => {\n  const d = $('Preparar Solicitud').item.json;\n\n  const faltantes = [];\n\n  if (!d.nombre) faltantes.push('nombre');\n  if (!d.correo) faltantes.push('correo');\n  if (!d.servicio) faltantes.push('servicio');\n  if (!d.fecha_preferida) faltantes.push('fecha preferida');\n  if (!d.hora_preferida) faltantes.push('hora preferida');\n  if (!d.whatsapp) faltantes.push('WhatsApp');\n\n  if (faltantes.length > 0) {\n    return 'Tu solicitud de reserva fue rechazada porque faltan los siguientes datos obligatorios: ' +\n      faltantes.join(', ') + '.';\n  }\n\n  return 'Hola ' + d.nombre +\n    ', tu solicitud de reserva para el ' +\n    d.fecha_preferida +\n    ' fue rechazada porque la fecha debe estar entre 1 y 7 días de anticipación.';\n})()\n}}",
+              "type": "string"
+            },
+            {
+              "id": "2f881dd6-5909-452d-99c8-3db6f093a4b1",
+              "name": "Estado",
+              "value": "Rechazado",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        -608,
+        448
+      ],
+      "id": "1e4927a5-f61b-4ab9-96cd-f13b36f7b078",
+      "name": "Salida Cita Rechazada"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fb8fef55-e710-4b70-b943-6653049f4ccb",
+              "name": "Asunto",
+              "value": "Solicitud de reserva confirmada",
+              "type": "string"
+            },
+            {
+              "id": "b35760e9-ca96-439b-abf5-dae9f5019ef1",
+              "name": "cuerpo",
+              "value": "={{ 'Hola ' + $('Preparar Solicitud').item.json.nombre + ', tu cita para ' + $('Preparar Solicitud').item.json.servicio + ' quedó confirmada para el ' + $('Preparar Solicitud').item.json.fecha_preferida + ' a las ' + $('Preparar Solicitud').item.json.hora_preferida + '. Muchas gracias por reservar con nosotros' }}",
+              "type": "string"
+            },
+            {
+              "id": "289d6f87-efdb-41e5-a4fb-96ce723693fd",
+              "name": "Estado",
+              "value": "Confirmado",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        224,
+        0
+      ],
+      "id": "60c695e3-c533-4323-a960-1c4027ba4d5c",
+      "name": "Salida Cita Confirmada"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/16NTQ0721Kou9_alrH-cmeSajP31L1fgpfWh2mZqCb18/edit?usp=sharing",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Confirmado",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/16NTQ0721Kou9_alrH-cmeSajP31L1fgpfWh2mZqCb18/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "nombre": "={{ $('Preparar Solicitud').item.json.nombre }}",
+            "whatsapp": "={{ $('Preparar Solicitud').item.json.whatsapp }}",
+            "correo": "={{ $('Preparar Solicitud').item.json.correo }}",
+            "fecha_preferida": "={{ $('Preparar Solicitud').item.json.fecha_preferida }}",
+            "hora_preferida": "={{ $('Preparar Solicitud').item.json.hora_preferida }}",
+            "servicio": "={{ $('Preparar Solicitud').item.json.servicio }}",
+            "estado": "={{ $json.estado }}",
+            "asunto": "={{ $json.asunto }}",
+            "cuerpo": "={{ $json.cuerpo }}"
+          },
+          "matchingColumns": [
+            "nombre"
+          ],
+          "schema": [
+            {
+              "id": "nombre",
+              "displayName": "nombre",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "whatsapp",
+              "displayName": "whatsapp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "correo",
+              "displayName": "correo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "fecha_preferida",
+              "displayName": "fecha_preferida",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "hora_preferida",
+              "displayName": "hora_preferida",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "servicio",
+              "displayName": "servicio",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "estado",
+              "displayName": "estado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "asunto",
+              "displayName": "asunto",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "cuerpo",
+              "displayName": "cuerpo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        512,
+        0
+      ],
+      "id": "a2c33306-f577-4733-9171-4a05080b5c0a",
+      "name": "SheetConfirmada",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "sqtiAAFsHxctCm67",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/16NTQ0721Kou9_alrH-cmeSajP31L1fgpfWh2mZqCb18/edit?usp=sharing",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 98097948,
+          "mode": "list",
+          "cachedResultName": "Rechazado",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/16NTQ0721Kou9_alrH-cmeSajP31L1fgpfWh2mZqCb18/edit#gid=98097948"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "row_number": 0,
+            "cuerpo": "={{ $json.cuerpo }}",
+            "asunto": "={{ $json.Asunto }}",
+            "estado": "={{ $json.Estado }}",
+            "nombre": "={{ $('Preparar Solicitud').item.json.nombre }}",
+            "whatsapp": "={{ $('Preparar Solicitud').item.json.whatsapp }}",
+            "correo": "={{ $('Preparar Solicitud').item.json.correo }}",
+            "fecha_preferida": "={{ $('Preparar Solicitud').item.json.fecha_preferida }}",
+            "hora_preferida": "={{ $('Preparar Solicitud').item.json.hora_preferida }}",
+            "servicio": "={{ $('Preparar Solicitud').item.json.servicio }}"
+          },
+          "matchingColumns": [
+            "nombre"
+          ],
+          "schema": [
+            {
+              "id": "nombre",
+              "displayName": "nombre",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "whatsapp",
+              "displayName": "whatsapp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "correo",
+              "displayName": "correo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "fecha_preferida",
+              "displayName": "fecha_preferida",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "hora_preferida",
+              "displayName": "hora_preferida",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "servicio",
+              "displayName": "servicio",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "estado",
+              "displayName": "estado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "asunto",
+              "displayName": "asunto",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "cuerpo",
+              "displayName": "cuerpo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -272,
+        400
+      ],
+      "id": "6ae9fd57-d3a0-4484-8844-30a73ad2e254",
+      "name": "SheetRechazada",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "sqtiAAFsHxctCm67",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "d55f20f3-aa1f-4533-9ed8-69b7196caa54",
+              "leftValue": "={{ $json.available }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -336,
+        16
+      ],
+      "id": "ea148d68-b186-46f4-91df-4583fefc2ea3",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "resource": "calendar",
+        "calendar": {
+          "__rl": true,
+          "value": "f9b0984a012180430fbd3ea57f8b7c7b9200b22ca2bd8340a77266f4a24ee0c7@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "n8nQuickBook"
+        },
+        "timeMin": "={{ $json.fecha_preferida + 'T' + $json.hora_preferida + ':00' }}",
+        "timeMax": "={{ DateTime.fromISO($json.fecha_preferida + 'T' + $json.hora_preferida).plus({ hours: 1 }).toFormat(\"yyyy-MM-dd'T'HH:mm:ss\") }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.3,
+      "position": [
+        -560,
+        16
+      ],
+      "id": "f22cb3ba-2c34-48d1-8b77-7d6226b8ed51",
+      "name": "Validar en el calendario",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "asqNNHaEn5m5TItI",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "f9b0984a012180430fbd3ea57f8b7c7b9200b22ca2bd8340a77266f4a24ee0c7@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "n8nQuickBook"
+        },
+        "start": "={{ $('Preparar Solicitud').item.json.fecha_preferida + 'T' + $('Preparar Solicitud').item.json.hora_preferida + ':00' }}",
+        "end": "={{ DateTime.fromISO($('Preparar Solicitud').item.json.fecha_preferida + 'T' + $('Preparar Solicitud').item.json.hora_preferida).plus({ hours: 1 }).toFormat(\"yyyy-MM-dd'T'HH:mm:ss\") }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        0
+      ],
+      "id": "ad3a5c21-427a-4cca-ae6b-d46f1bd03368",
+      "name": "Crea la cita en el calendario",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "asqNNHaEn5m5TItI",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fb8fef55-e710-4b70-b943-6653049f4ccb",
+              "name": "Asunto",
+              "value": "Solicitud de reserva rechazada",
+              "type": "string"
+            },
+            {
+              "id": "b35760e9-ca96-439b-abf5-dae9f5019ef1",
+              "name": "cuerpo",
+              "value": "={{ 'Hola ' + $('Preparar Solicitud').item.json.nombre + ', tu solicitud de reserva para el ' + $('Preparar Solicitud').item.json.fecha_preferida + ' fue rechazada porque la fecha esta ocupada' }}",
+              "type": "string"
+            },
+            {
+              "id": "2f881dd6-5909-452d-99c8-3db6f093a4b1",
+              "name": "Estado",
+              "value": "Rechazado",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        -464,
+        224
+      ],
+      "id": "4dbebecb-c9cd-4975-a052-cd1f175ec137",
+      "name": "Cita Ocupada"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.baserow.io/api/database/rows/table/1227799/?user_field_names=true",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": []
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"Nombre\": \"{{$json.nombre}}\",\n  \"Whatsapp\": \"{{$json.whatsapp}}\",\n  \"Correo\": \"{{$json.correo}}\",\n  \"Fecha_preferida\": \"{{$json.fecha_preferida}}\",\n  \"Hora_preferida\": \"{{$json.hora_preferida}}\",\n  \"Servicio\": \"{{$json.servicio}}\",\n  \"asunto\": \"{{$json.asunto}}\",\n  \"Cuerpo\": \"{{$json.cuerpo}}\",\n  \"Estado\": \"{{$json.estado}}\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        -16,
+        400
+      ],
+      "id": "b3e38d60-4fad-4f8f-bc15-02e78cca3c6d",
+      "name": "HTTP Request Rechazado",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "AOX9yr7eL9VfYsPW",
+          "name": "Header Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.telegram.org/botREEMPLAZAR_TOKEN_TELEGRAM/sendMessage",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "chat_id",
+              "value": "REEMPLAZAR_CHAT_ID"
+            },
+            {
+              "name": "text",
+              "value": "=Hola {{$('Mapear con expresiones').item.json.nombre}} 👋 Tu cita de {{$('Mapear con expresiones').item.json.servicio}} ha sido confirmada. 📅 Fecha: {{$('Mapear con expresiones').item.json.fecha_preferida}} 🕐 Hora: {{$('Mapear con expresiones').item.json.hora_preferida}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        848,
+        320
+      ],
+      "id": "6176b07f-25af-4fc9-9284-fca1ebfcd985",
+      "name": "HTTP Request Telegram",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.baserow.io/api/database/rows/table/1227794/?user_field_names=true",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": []
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"Nombre\": \"{{$json.nombre}}\",\n  \"Whatsapp\": \"{{$json.whatsapp}}\",\n  \"Correo\": \"{{$json.correo}}\",\n  \"Fecha_preferida\": \"{{$json.fecha_preferida}}\",\n  \"Hora_preferida\": \"{{$json.hora_preferida}}\",\n  \"Servicio\": \"{{$json.servicio}}\",\n  \"asunto\": \"{{$json.asunto}}\",\n  \"Cuerpo\": \"{{$json.cuerpo}}\",\n  \"Estado\": \"{{$json.estado}}\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        816,
+        0
+      ],
+      "id": "62c2fc8d-f0f6-45f5-9b3f-bb4c35610c92",
+      "name": "HTTP Request Confirmar",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "AOX9yr7eL9VfYsPW",
+          "name": "Header Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "QuickBook-Reserva",
+        "authentication": "headerAuth",
+        "responseMode": "responseNode",
+        "options": {
+          "allowedOrigins": "http://127.0.0.1:5500"
+        }
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -2096,
+        256
+      ],
+      "id": "4d485da7-dfef-42f9-b5c5-bf8b8ad0a75b",
+      "name": "Webhook",
+      "webhookId": "cc9b3dee-f5c2-4011-bd2f-de8001be648e",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "TL8vHhyb0xxCp1td",
+          "name": "Header Auth account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"estado\": {{ JSON.stringify($json.Estado) }},\n  \"mensaje\": {{ JSON.stringify($json.cuerpo) }}\n}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        -128,
+        224
+      ],
+      "id": "5242f0a5-21a8-4288-8dc7-b028ef0691d8",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"estado\": {{ JSON.stringify($json.Estado) }},\n  \"mensaje\": {{ JSON.stringify($json.cuerpo) }}\n}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        464,
+        192
+      ],
+      "id": "12064afc-5212-4683-a266-39501b9d4fe2",
+      "name": "Respond to Webhook1"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"estado\": {{ JSON.stringify($json.Estado) }},\n  \"mensaje\": {{ JSON.stringify($json.cuerpo) }}\n}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        -288,
+        608
+      ],
+      "id": "cdf81b5e-fcb3-479b-bcf9-485e242012f5",
+      "name": "Respond to Webhook2"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "qWtzlNzu5GXxfGMX",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/qWtzlNzu5GXxfGMX",
+          "cachedResultName": "Preparar_Solicitud"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "usuario_whatsapp": "={{ $json.body?.usuario_whatsapp || $json['Usuario Whatsapp '] || '' }}",
+            "servicio": "={{ $json.body?.servicio || $json['Servicio'] || '' }}",
+            "hora_preferida": "={{ $json.body?.hora_preferida || $json['Hora preferida'] || '' }}",
+            "fecha_preferida": "={{ $json.body?.fecha_preferida || $json['Fecha preferida'] || '' }}",
+            "correo": "={{ $json.body?.correo || $json['Correo'] || '' }}",
+            "whatsapp": "={{ $json.body?.whatsapp || $json['WhatsApp'] || '' }}",
+            "nombre": "={{ $json.body?.nombre || $json['Nombre Completo'] || '' }}",
+            "origen": "={{ $json.body ? 'webhook' : 'formulario' }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "nombre",
+              "displayName": "nombre",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "whatsapp",
+              "displayName": "whatsapp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "correo",
+              "displayName": "correo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "fecha_preferida",
+              "displayName": "fecha_preferida",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "hora_preferida",
+              "displayName": "hora_preferida",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "servicio",
+              "displayName": "servicio",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "usuario_whatsapp",
+              "displayName": "usuario_whatsapp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "origen",
+              "displayName": "origen",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        -1856,
+        192
+      ],
+      "id": "b670e620-09cc-4d4b-8c85-92c222035d0a",
+      "name": "Preparar Solicitud"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Salida Cita Rechazada",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Formulario Reserva": {
+      "main": [
+        [
+          {
+            "node": "Mapear con expresiones",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Preparar Solicitud",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mapear con expresiones": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Validar en el calendario",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Validar en el calendario",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Validar en el calendario",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Salida Cita Confirmada": {
+      "main": [
+        [
+          {
+            "node": "SheetConfirmada",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Respond to Webhook1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Salida Cita Rechazada": {
+      "main": [
+        [
+          {
+            "node": "SheetRechazada",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Respond to Webhook2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Crea la cita en el calendario",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Cita Ocupada",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validar en el calendario": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Crea la cita en el calendario": {
+      "main": [
+        [
+          {
+            "node": "Salida Cita Confirmada",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cita Ocupada": {
+      "main": [
+        [
+          {
+            "node": "SheetRechazada",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SheetConfirmada": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request Confirmar",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "HTTP Request Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SheetRechazada": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request Rechazado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request Confirmar": {
+      "main": [
+        []
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Preparar Solicitud",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparar Solicitud": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "timezone": "America/Bogota",
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": "9ReeBSnfKIofEGln"
+  },
+  "versionId": "888234e9-a340-447d-90e4-55d66525fdf9",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "nodeGroups": [],
+  "id": "QNsCihjT0HiLp7z7",
+  "tags": []
+}

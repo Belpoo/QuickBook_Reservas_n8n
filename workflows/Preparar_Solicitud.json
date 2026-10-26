@@ -1,0 +1,85 @@
+{
+  "name": "Preparar_Solicitud",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "nombre"
+            },
+            {
+              "name": "whatsapp"
+            },
+            {
+              "name": "correo"
+            },
+            {
+              "name": "fecha_preferida"
+            },
+            {
+              "name": "hora_preferida"
+            },
+            {
+              "name": "servicio"
+            },
+            {
+              "name": "usuario_whatsapp"
+            },
+            {
+              "name": "origen"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "cbb2c471-904e-4a90-a12c-1d2b8734f73a",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={\n  \"nombre\": \"{{ ($json.nombre || '').trim().toLowerCase() }}\",\n  \"whatsapp\": \"{{ ($json.whatsapp || '').replace(/\\\\s/g, '').toLowerCase() }}\",\n  \"correo\": \"{{ ($json.correo || '').trim().toLowerCase() }}\",\n  \"fecha_preferida\": \"{{ $json.fecha_preferida || '' }}\",\n  \"hora_preferida\": \"{{ $json.hora_preferida || '' }}\",\n  \"servicio\": \"{{ ($json.servicio || '').trim().toLowerCase() }}\",\n  \"usuario_whatsapp\": \"{{ ($json.usuario_whatsapp || '').trim().toLowerCase() }}\",\n  \"origen\": \"{{ ($json.origen || '').trim().toLowerCase() }}\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        208,
+        0
+      ],
+      "id": "e79a9f36-2961-49dc-958e-8541c1fec0a0",
+      "name": "Normalizar Solicitud"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Normalizar Solicitud",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "15fcf10a-f32f-41a5-b79d-330ed9ab385c",
+  "meta": {},
+  "nodeGroups": [],
+  "id": "qWtzlNzu5GXxfGMX",
+  "tags": []
+}
