@@ -140,3 +140,4 @@ Invoke-RestMethod -Method Post -Uri "http://localhost:5678/webhook-test/QuickBoo
  
 - [Bitácora unificada](documentacion/Bitacora_Unificada_Proyecto.md)
 - [Presentación del proyecto (PDF)](QuickBook-reservas-inteligentes.pdf)
+- [FormularioQuickBook](FormularioQuickBook)
